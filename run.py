@@ -6,8 +6,6 @@ import matplotlib.pyplot as plt
 
 plt.rcParams['figure.figsize'] = [10, 5]
 
-from co_occurence import *
-
 # Check Python Version
 import sys
 import os
@@ -15,10 +13,9 @@ import os
 assert sys.version_info[0] == 3
 assert sys.version_info[1] >= 5
 
-sys.path.append(os.path.abspath(os.path.join('..')))
-
+sys.path.append(os.path.abspath(os.path.join(r'C:\Users\msingleton\Documents\GitHub\XCS224N-A1')))
+from co_occurence import *
 from utils.utils import *
-
 
 def plot_embeddings(M_reduced, word2Ind, words, title):
     for word in words:
@@ -39,5 +36,5 @@ M_reduced_co_occurrence = reduceToKDim(M_co_occurrence, k=2)
 M_lengths = np.linalg.norm(M_reduced_co_occurrence, axis=1)
 M_normalized = M_reduced_co_occurrence / M_lengths[:, np.newaxis]  # broadcasting
 
-words = ['barrels', 'bpd', 'ecuador', 'energy', 'industry', 'kuwait', 'oil', 'output', 'petroleum', 'venezuela']
+words = ['barrels', 'bpd', 'ecuador', 'energy', 'industry', 'kuwait', 'oil', 'output', 'petroleum', 'venezuela','usa','canada']
 plot_embeddings(M_normalized, word2Ind_co_occurrence, words, 'co_occurence_embeddings.png')

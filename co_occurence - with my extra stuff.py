@@ -11,6 +11,26 @@ from sklearn.decomposition import PCA
 sys.path.append(os.path.abspath(os.path.join(r'C:\Users\msingleton\Documents\GitHub\XCS224N-A1')))
 from utils.sanity_checks import *
 
+# Set up a test corpus
+#test_corpus = []
+#d1 = 'this is the first document this is the second sentence of the first document'
+#d2 = 'This is the second document'
+#d3 = 'This is the third document'
+#list_ = d1.split(' ')  # the output of the split method is a list
+#test_corpus.append(list_)
+#set(list_)  # Stuffing a list into a set will automatically identify the distinct words
+#list_ = d2.split(' ')  # the output of the split method is a list
+#test_corpus.append(list_)
+#list_ = d3.split(' ')  # the output of the split method is a list
+#test_corpus.append(list_)
+#test_corpus
+
+#concat_list = [j for i in test_corpus for j in i]
+#concat_list
+
+#corpus_words = list(set(concat_list))
+#corpus_words
+
 def distinctWords(corpus):
     """ Determine a list of distinct words for the corpus.
         Params:
@@ -98,6 +118,36 @@ def computeCoOccurrenceMatrix(corpus, window_size=4):
 
     return M, word2Ind
 
+###################################################
+import pandas as pd
+pd.options.display.max_columns = 20
+import numpy as np
+la = np.linalg
+words = ["I","like","enjoy","deep","learning","NLP","flying","."]
+X = np.array([[0,2,1,0,0,0,0,0],
+              [2,0,0,1,0,1,0,0],
+              [1,0,0,0,0,0,1,0],
+              [0,1,0,0,1,0,0,0],
+              [0,0,0,1,0,0,0,1],
+              [0,1,0,0,0,0,0,1],
+              [0,0,1,0,0,0,0,1],
+              [0,0,0,0,1,1,1,0]])
+    
+U, s, Vh = la.svd(X, full_matrices=True)
+
+np.around(U,2)
+np.around(s,2)
+np.around(Vh)
+
+M1 = np.dot(U,np.diag(s))
+M2 = np.dot(M1,Vh)
+np.around(M2,2)     # It works!!! M2 = X
+
+import matplotlib.pyplot as plt
+for i in range(len(words)):
+    plt.text(U[i,0], U[i,1], words[i])
+##################################################
+   
 def reduceToKDim(M, k=2):
     """ Reduce a co-occurence count matrix of dimensionality (num_corpus_words, num_corpus_words)
         to a matrix of dimensionality (num_corpus_words, k) using the following SVD function from Scikit-Learn:
@@ -118,6 +168,8 @@ def reduceToKDim(M, k=2):
     ### SOLUTION BEGIN
     from sklearn.decomposition import TruncatedSVD
     svd = TruncatedSVD(n_components=k, n_iter=n_iters)
+    #svd.fit(X)
+    #svd.transform(X)
     M_reduced = svd.fit_transform(M)  
     ### SOLUTION END
 
